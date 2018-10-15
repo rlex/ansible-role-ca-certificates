@@ -1,0 +1,22 @@
+---
+- name: install ca package
+  package:
+    name: ca-certificates
+    state: present
+
+- name: enable custom CA on rhel6
+  shell: /usr/bin/update-ca-trust enable
+  when: ansible_os_family == "RedHat" and ansible_distribution_major_version|int == 6
+
+- name: copy certificate authorities to system
+  copy:
+    src: "{{ item }}"
+    dest: "{{ ca_certificates_system_path[ansible_os_family] }}"
+    owner: root
+    group: root
+    mode: 0644
+  with_fileglob:
+    - "{{ ca_certificates_source }}"
+  notify:
+    - update trusted ca (debian)
+    - update trusted ca (redhat)

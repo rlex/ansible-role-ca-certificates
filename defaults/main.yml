@@ -1,0 +1,4 @@
+ca_certificates_system_path:
+  RedHat: /etc/pki/ca-trust/source/anchors
+  Debian: /usr/local/share/ca-certificates
+ca_certificates_source: "{{inventory_dir}}/files/ca-certificates/*"
